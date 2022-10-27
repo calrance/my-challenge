@@ -1,0 +1,72 @@
+@use "@/assets/styles/util/functions" as f;
+
+//////////////////////////////////////
+// Configuration
+//////////////////////////////////////
+
+$color-primary: #0E86F4;
+$color-secondary: #33B697;
+$color-dark-blue: #22577A;
+$color-light-blue: #3A7094;
+$color-body-text: #6D6D79;
+$color-heading-text: #39393C;
+$color-heading-text-2: #6D6D79;
+$color-black: #19191A;
+$color-black-2: #2D3138;
+$color-gray: #D5D8DB;
+$color-gray-2: #9A9EA1;
+$color-white: #FFFFFF;
+$color-placeholder: #C6C3C3;
+$color-border: #E9E9E9;
+$color-success: #82B946;
+$color-warning: #E6A23C;
+$color-danger: #F65C6B;
+
+$text-sm: f.rc(13px);
+$text-base: f.rc(16px);
+$text-md: f.rc(18px);
+$text-lg: f.rc(24px);
+$text-xl: f.rc(28px);
+$text-2xl: f.rc(44px);
+$text-display-1: f.rc(75px);
+$text-display-2: f.rc(64px);
+
+// Border
+$border-radius: f.rc(4px);
+$border-radius-lg: f.rc(14px);
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+//////////////////////////////////////
+// Bootsrap Configuration
+//////////////////////////////////////
+
+// Color
+$primary:       $color-primary;
+$secondary:     $color-secondary;
+$success:       $color-success;
+$warning:       $color-warning;
+$danger:        $color-danger;
+
+$body-color:    $color-body-text;
+
+// Fonts
+$font-family-base: var(--font-family);
+
+$headings-font-weight: 700;
+
+$input-btn-font-size: f.rc(18px);
+
+$btn-padding-y: f.rc(9px); 
+$btn-padding-x: f.rc(23px);
+
+$btn-border-radius: f.rc(4px);
+$btn-border-radius-lg: $btn-border-radius;
+$btn-font-size-lg: $text-lg;

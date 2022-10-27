@@ -1,0 +1,59 @@
+:root {
+
+  // Color
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  --color-light-blue: #{$color-light-blue};
+  --color-dark-blue: #{$color-dark-blue};
+
+  --color-body-text: #{$color-body-text};
+  --color-heading-text: #{$color-heading-text};
+  --color-heading-text-2: #{$color-heading-text-2};
+
+  --color-black: #{$color-black};
+  --color-black-2: #{$color-black-2};
+  --color-gray: #{$color-gray};
+  --color-gray-2: #{$color-gray-2};
+  --color-white: #{$color-white};
+
+  --color-placeholder: #{$color-placeholder};
+  --color-border: #{$color-border};
+
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-danger: #{$color-danger};
+
+
+  // Fonts
+  --text-sm: #{$text-sm};
+  --text-base: #{$text-base};
+  --text-md: #{$text-md};
+  --text-lg: #{$text-lg};
+  --text-xl: #{$text-xl};
+  --text-2xl: #{$text-2xl};
+  --text-display-1: #{$text-display-1};
+  --text-display-2: #{$text-display-2};
+
+  --font-family: 'Roboto', sans-serif;
+
+  // Override Element-Plus
+  // --el-color-primary-light-3: #56b1b3;
+}
+
+body {
+  font-family: var(--font-family);
+}
+
+.material-icons {
+  vertical-align: middle;
+  margin-top: rc(-2px);
+}
+
+a {
+  text-decoration: underline;
+  color: $color-primary;
+}
+
+.border-border {
+  color: var(--color-border);
+}
