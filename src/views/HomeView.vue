@@ -9,14 +9,22 @@ let page = ref(1);
 let pageSize = ref(5);
 let totalPages = ref(0);
 
+let errorMsg = ref();
+
 
 async function displayRatesList() {
-  const res = await axios.get("https://api.coingecko.com/api/v3/exchange_rates");
+  const res = await axios.get("https://api.coingecko.com/api/v3/exchange_rates").catch(function (error) {
+    errorMsg = error.message;
+  });
 
-  ratesListTable.value = Object.entries(res.data.rates).map((item: any[]) => ({
-    key: item[0],
-    info: item[1],
-  }));
+  if (res) {
+    ratesListTable.value = Object.entries(res.data.rates).map((item: any[]) => ({
+      key: item[0],
+      info: item[1],
+    }));
+  }
+
+
 
   // console.log(JSON.stringify(ratesListTable.value));
   // console.log(JSON.stringify(res));
