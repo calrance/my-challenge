@@ -2,6 +2,10 @@
 import { computed, reactive, ref } from '@vue/reactivity';
 import axios from 'axios';
 import { onMounted } from 'vue';
+import useSWRV from 'swrv';
+import LocalStorageCache from 'swrv/dist/cache/adapters/localStorage';
+
+const apiURL = "https://api.coingecko.com/api/v3/exchange_rates";
 
 let ratesListTable = ref();
 
@@ -13,22 +17,39 @@ let errorMsg = ref();
 
 
 async function displayRatesList() {
-  const res = await axios.get("https://api.coingecko.com/api/v3/exchange_rates").catch(function (error) {
-    errorMsg = error.message;
+  const { data: res, error } = useSWRV(apiURL, fetcher, {
+    cache: new LocalStorageCache('swrv'),
+    shouldRetryOnError: false
   });
 
-  if (res) {
-    ratesListTable.value = Object.entries(res.data.rates).map((item: any[]) => ({
+  console.log("resError > " + JSON.stringify(res));
+
+  // const res = await axios.get(apiURL).catch(function (error) {
+  //   errorMsg = error.message;
+  // });
+
+  if (res._object.data != false) {
+    ratesListTable.value = Object.entries(res._object.data.rates).map((item: any[]) => ({
       key: item[0],
       info: item[1],
     }));
   }
-
-
-
-  // console.log(JSON.stringify(ratesListTable.value));
-  // console.log(JSON.stringify(res));
 }
+
+const fetcher = async (url: string) => {
+  await axios.get(url).catch(function (error) {
+    errorMsg = error.message;
+    return null;
+
+  }).then(response => {
+    if(response){
+      return response.data;
+    } else {
+      return null;
+    }
+  });
+}
+
 
 const displayRatesListTable = computed(() => {
   return ratesListTable.value.slice(pageSize.value * page.value - pageSize.value, pageSize.value * page.value);
@@ -46,7 +67,6 @@ onMounted(() => {
   displayRatesList();
 });
 
-
 </script>
 
 <template>
@@ -56,12 +76,14 @@ onMounted(() => {
         <h1 class="mb-5 font-bold">Rates List</h1>
 
         <div v-if="ratesListTable">
-          <el-table :class="'mb-10'" :data="displayRatesListTable" style="width: 100%">
-            <el-table-column sortable prop="info.name" label="Name" />
-            <el-table-column sortable prop="info.type" label="Type" />
-            <el-table-column prop="info.unit" label="Unit" />
-            <el-table-column sortable prop="info.value" label="Value" />
-          </el-table>
+          <KeepAlive>
+            <el-table :class="'mb-10'" :data="displayRatesListTable" style="width: 100%">
+              <el-table-column sortable prop="info.name" label="Name" />
+              <el-table-column sortable prop="info.type" label="Type" />
+              <el-table-column prop="info.unit" label="Unit" />
+              <el-table-column sortable prop="info.value" label="Value" />
+            </el-table>
+          </KeepAlive>
 
           <div class="text-right">
             <el-pagination layout="sizes, prev, pager, next" :total="ratesListTable.length"
