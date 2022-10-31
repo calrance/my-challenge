@@ -1,4 +1,11 @@
 .dark {
+  .el-table {
+    --el-table-header-bg-color: #292931;
+    --el-table-header-text-color: #FFFFFF;
+
+    color: #FFFFFF;
+  }
+
   .el-table__body-wrapper {
     tr td.el-table__cell {
       background-color: var(--el-bg-color);

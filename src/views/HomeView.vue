@@ -4,6 +4,7 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import useSWRV from 'swrv';
 import LocalStorageCache from 'swrv/dist/cache/adapters/localStorage';
+import type ElTable from 'element-plus/es/components/table';
 
 const apiURL = "https://api.coingecko.com/api/v3/exchange_rates";
 
@@ -51,9 +52,19 @@ const fetcher = async (url: string) => {
   });
 }
 
+function testF() {
+
+}
+
 const displayRatesListTable = computed(() => {
   return ratesListTable.value.slice(pageSize.value * page.value - pageSize.value, pageSize.value * page.value);
 });
+
+const formatter = (val: any) => {
+  console.log("val >> " + JSON.stringify( val));
+
+  return val.info.value.toFixed(2);
+}
 
 function clearSorting() {
   tableRef.value.clearSort();
@@ -81,18 +92,20 @@ onMounted(() => {
       <div class="py-10">
         <h1 class="mb-5 font-bold text-lg">Rates List</h1>
 
+        <!-- <button @click="testF()">Test</button> -->
+
         <div v-if="ratesListTable">
-          <el-table ref="tableRef" :class="'mb-10 w-full'" stripe :data="displayRatesListTable">
+          <el-table ref="tableRef" :class="'mb-10 w-full'" :data="displayRatesListTable">
             <el-table-column fixed sortable prop="info.name" label="Name" min-width="150" />
             <el-table-column class-name="text-right" sortable prop="info.type" label="Type" />
             <el-table-column class-name="text-right" prop="info.unit" label="Unit" />
-            <el-table-column class-name="text-right" sortable prop="info.value" label="Value" min-width="150" />
+            <el-table-column class-name="text-right" sortable prop="info.value" :formatter="formatter" label="Value" min-width="150" />
           </el-table>
 
           <div class="hidden lg:block">
             <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next"
               :total="ratesListTable.length" @current-change="handlePaginationChange"
-              @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]" :page-size="pageSize" />
+              @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25, 100]" :page-size="pageSize" />
           </div>
 
           <div class="lg:hidden">
