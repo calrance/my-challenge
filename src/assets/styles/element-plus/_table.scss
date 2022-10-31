@@ -1,0 +1,7 @@
+.dark {
+  .el-table__body-wrapper {
+    tr td.el-table__cell {
+      background-color: var(--el-bg-color);
+    }
+  }
+}

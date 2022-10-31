@@ -15,6 +15,7 @@ let totalPages = ref(0);
 
 let errorMsg = ref();
 
+const tableRef = ref<InstanceType<typeof ElTable>>();
 
 async function displayRatesList() {
   const { data: res, error } = useSWRV(apiURL, fetcher, {
@@ -22,7 +23,7 @@ async function displayRatesList() {
     shouldRetryOnError: false
   });
 
-  console.log("resError > " + JSON.stringify(res));
+  // console.log("resError > " + JSON.stringify(res));
 
   // const res = await axios.get(apiURL).catch(function (error) {
   //   errorMsg = error.message;
@@ -50,17 +51,22 @@ const fetcher = async (url: string) => {
   });
 }
 
-
 const displayRatesListTable = computed(() => {
   return ratesListTable.value.slice(pageSize.value * page.value - pageSize.value, pageSize.value * page.value);
 });
 
+function clearSorting() {
+  tableRef.value.clearSort();
+}
+
 const handlePaginationChange = (val: number) => {
   page.value = val;
+  clearSorting();
 }
 
 const handlePageSizeChange = (val: number) => {
   pageSize.value = val;
+  clearSorting();
 }
 
 onMounted(() => {
@@ -72,21 +78,25 @@ onMounted(() => {
 <template>
   <main>
     <div class="container">
-      <div class="mt-5">
-        <h1 class="mb-5 font-bold">Rates List</h1>
+      <div class="py-10">
+        <h1 class="mb-5 font-bold text-lg">Rates List</h1>
 
         <div v-if="ratesListTable">
-          <KeepAlive>
-            <el-table :class="'mb-10'" :data="displayRatesListTable" style="width: 100%">
-              <el-table-column sortable prop="info.name" label="Name" />
-              <el-table-column sortable prop="info.type" label="Type" />
-              <el-table-column prop="info.unit" label="Unit" />
-              <el-table-column sortable prop="info.value" label="Value" />
-            </el-table>
-          </KeepAlive>
+          <el-table ref="tableRef" :class="'mb-10 w-full'" stripe :data="displayRatesListTable">
+            <el-table-column fixed sortable prop="info.name" label="Name" min-width="150"/>
+            <el-table-column class-name="text-right" sortable prop="info.type" label="Type" />
+            <el-table-column class-name="text-right" prop="info.unit" label="Unit" />
+            <el-table-column class-name="text-right" sortable prop="info.value" label="Value" min-width="150" />
+          </el-table>
 
-          <div class="text-right">
-            <el-pagination layout="sizes, prev, pager, next" :total="ratesListTable.length"
+          <div class="hidden lg:block">
+            <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next" :total="ratesListTable.length"
+              @current-change="handlePaginationChange" @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]"
+              :page-size="pageSize" />
+          </div>
+
+          <div class="lg:hidden">
+            <el-pagination small background layout="prev, pager, next" :total="ratesListTable.length"
               @current-change="handlePaginationChange" @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]"
               :page-size="pageSize" />
           </div>
