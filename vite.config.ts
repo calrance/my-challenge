@@ -37,4 +37,9 @@ export default defineConfig({
     // },
     devSourcemap: true,
   },
+  test: {
+    deps: {
+      inline: ['element-plus'],
+    },
+  }
 })

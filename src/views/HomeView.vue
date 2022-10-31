@@ -29,7 +29,7 @@ async function displayRatesList() {
   //   errorMsg = error.message;
   // });
 
-  if (res._object.data != false) {
+  if (res._object.data != false && res._object.data) {
     ratesListTable.value = Object.entries(res._object.data.rates).map((item: any[]) => ({
       key: item[0],
       info: item[1],
@@ -43,7 +43,7 @@ const fetcher = async (url: string) => {
     return null;
 
   }).then(response => {
-    if(response){
+    if (response) {
       return response.data;
     } else {
       return null;
@@ -83,16 +83,16 @@ onMounted(() => {
 
         <div v-if="ratesListTable">
           <el-table ref="tableRef" :class="'mb-10 w-full'" stripe :data="displayRatesListTable">
-            <el-table-column fixed sortable prop="info.name" label="Name" min-width="150"/>
+            <el-table-column fixed sortable prop="info.name" label="Name" min-width="150" />
             <el-table-column class-name="text-right" sortable prop="info.type" label="Type" />
             <el-table-column class-name="text-right" prop="info.unit" label="Unit" />
             <el-table-column class-name="text-right" sortable prop="info.value" label="Value" min-width="150" />
           </el-table>
 
           <div class="hidden lg:block">
-            <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next" :total="ratesListTable.length"
-              @current-change="handlePaginationChange" @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]"
-              :page-size="pageSize" />
+            <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next"
+              :total="ratesListTable.length" @current-change="handlePaginationChange"
+              @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]" :page-size="pageSize" />
           </div>
 
           <div class="lg:hidden">
