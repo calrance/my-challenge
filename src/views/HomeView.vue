@@ -24,12 +24,6 @@ async function displayRatesList() {
     shouldRetryOnError: false
   });
 
-  // console.log("resError > " + JSON.stringify(res));
-
-  // const res = await axios.get(apiURL).catch(function (error) {
-  //   errorMsg = error.message;
-  // });
-
   if (res._object.data != false && res._object.data) {
     ratesListTable.value = Object.entries(res._object.data.rates).map((item: any[]) => ({
       key: item[0],
@@ -52,17 +46,11 @@ const fetcher = async (url: string) => {
   });
 }
 
-function testF() {
-
-}
-
 const displayRatesListTable = computed(() => {
   return ratesListTable.value.slice(pageSize.value * page.value - pageSize.value, pageSize.value * page.value);
 });
 
 const formatter = (val: any) => {
-  console.log("val >> " + JSON.stringify( val));
-
   return val.info.value.toFixed(2);
 }
 
@@ -91,8 +79,6 @@ onMounted(() => {
     <div class="container">
       <div class="py-10">
         <h1 class="mb-5 font-bold text-lg">Rates List</h1>
-
-        <!-- <button @click="testF()">Test</button> -->
 
         <div v-if="ratesListTable">
           <el-table ref="tableRef" :class="'mb-10 w-full'" :data="displayRatesListTable">
