@@ -25,15 +25,15 @@ async function displayRatesList() {
 
   if (!res._object.data) {
     await mutate();
+  }
 
-    if (!res._object.error && res._object.data) {
-      ratesListTable.value = Object.entries(res._object.data.rates).map(
-        (item: any[]) => ({
-          key: item[0],
-          info: item[1],
-        })
-      );
-    }
+  if (!res._object.error && res._object.data) {
+    ratesListTable.value = Object.entries(res._object.data.rates).map(
+      (item: any[]) => ({
+        key: item[0],
+        info: item[1],
+      })
+    );
   }
 }
 
