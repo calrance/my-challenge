@@ -36,8 +36,6 @@ async function displayRatesList() {
       })
     );
   }
-
-  console.log("localStorage.getItem('rates-list') > " + localStorage.getItem('rates-list'));
 }
 
 const fetcher = async (url: string) => {
