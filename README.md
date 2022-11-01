@@ -1,10 +1,21 @@
-# vantage-code-challenge
+# Vantage Code Challenge
 
-This template should help get you started developing with Vue 3 in Vite.
+A sample web application displays the exchange rate of different types of currency.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Responsive design
+- Compatible with the majority of the browsers
+- Support offline browsing (Cached)
+- Provide API failure handling
+- Include unit testing and e2e testing
+- Dark theme design
+
+## Built with
+- [Vue 3](https://vuejs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [SASS](https://sass-lang.com/)
+- [Element Plus](https://element-plus.org/en-US/)
 
 ## Type Support for `.vue` Imports in TS
 
