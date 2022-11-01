@@ -18,35 +18,39 @@ let errorMsg = ref();
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
 async function displayRatesList() {
-  const { data: res } = useSWRV(apiURL, fetcher, {
+  const { data: res, mutate } = useSWRV(apiURL, fetcher, {
     cache: new LocalStorageCache("swrv"),
     shouldRetryOnError: false,
   });
 
-  if (res._object.data != false && res._object.data) {
-    ratesListTable.value = Object.entries(res._object.data.rates).map(
-      (item: any[]) => ({
-        key: item[0],
-        info: item[1],
-      })
-    );
+  if (!res._object.data) {
+    await mutate();
+
+    if (!res._object.error && res._object.data) {
+      ratesListTable.value = Object.entries(res._object.data.rates).map(
+        (item: any[]) => ({
+          key: item[0],
+          info: item[1],
+        })
+      );
+    }
   }
 }
 
 const fetcher = async (url: string) => {
-  await axios
+
+  const request = await axios
     .get(url)
-    .catch(function (error) {
-      errorMsg.value = error.message;
-      return null;
-    })
     .then((response) => {
-      if (response) {
-        return response.data;
-      } else {
-        return null;
-      }
+      return response.data;
+
+    }).catch(function (error) {
+      errorMsg.value = error.message;
+
+      throw error.message;
     });
+
+  return request;
 };
 
 const displayRatesListTable = computed(() => {
@@ -86,64 +90,29 @@ onMounted(() => {
         <h1 class="mb-5 font-bold text-lg">Rates List</h1>
 
         <div v-if="ratesListTable">
-          <el-table
-            ref="tableRef"
-            :class="'mb-10 w-full'"
-            :data="displayRatesListTable"
-          >
-            <el-table-column
-              fixed
-              sortable
-              prop="info.name"
-              label="Name"
-              min-width="150"
-            />
-            <el-table-column
-              class-name="text-right"
-              sortable
-              prop="info.type"
-              label="Type"
-            />
-            <el-table-column
-              class-name="text-right"
-              prop="info.unit"
-              label="Unit"
-            />
-            <el-table-column
-              class-name="text-right"
-              sortable
-              prop="info.value"
-              :formatter="formatter"
-              label="Value"
-              min-width="150"
-            />
+          <el-table ref="tableRef" :class="'mb-10 w-full'" :data="displayRatesListTable">
+            <el-table-column fixed sortable prop="info.name" label="Name" min-width="150" />
+            <el-table-column class-name="text-right" sortable prop="info.type" label="Type" />
+            <el-table-column class-name="text-right" prop="info.unit" label="Unit" />
+            <el-table-column class-name="text-right" sortable prop="info.value" :formatter="formatter" label="Value"
+              min-width="150" />
           </el-table>
 
           <div class="hidden lg:block">
-            <el-pagination
-              :class="'justify-end px-0'"
-              background
-              layout="sizes, prev, pager, next"
-              :total="ratesListTable.length"
-              @current-change="handlePaginationChange"
-              @size-change="handlePageSizeChange"
-              :page-sizes="[5, 10, 25, 100]"
-              :page-size="pageSize"
-            />
+            <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next"
+              :total="ratesListTable.length" @current-change="handlePaginationChange"
+              @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25, 100]" :page-size="pageSize" />
           </div>
 
           <div class="lg:hidden">
-            <el-pagination
-              small
-              background
-              layout="prev, pager, next"
-              :total="ratesListTable.length"
-              @current-change="handlePaginationChange"
-              @size-change="handlePageSizeChange"
-              :page-sizes="[5, 10, 25]"
-              :page-size="pageSize"
-            />
+            <el-pagination small background layout="prev, pager, next" :total="ratesListTable.length"
+              @current-change="handlePaginationChange" @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]"
+              :page-size="pageSize" />
           </div>
+        </div>
+
+        <div v-else="!ratesListTable">
+          <el-empty :image-size="200"  description="Oops, there is something wrong with the server. We are fixing it. Please try again later." />
         </div>
       </div>
     </div>
