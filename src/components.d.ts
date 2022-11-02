@@ -7,6 +7,7 @@ export {};
 
 declare module "@vue/runtime-core" {
   export interface GlobalComponents {
+    ElEmpty: typeof import("element-plus/es")["ElEmpty"];
     ElPagination: typeof import("element-plus/es")["ElPagination"];
     ElTable: typeof import("element-plus/es")["ElTable"];
     ElTableColumn: typeof import("element-plus/es")["ElTableColumn"];

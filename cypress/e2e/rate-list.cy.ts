@@ -1,15 +1,16 @@
 import { ApiConstant } from "./../../src/constant/api.constant";
 
-
 context("Rate List Page", () => {
   before(() => {
-    cy.request(ApiConstant.EXCHANGE_RATE).then((res) => {
-      expect(res.status).to.eq(200);
-    }).as("getExchangeRate");
-  })
+    cy.request(ApiConstant.EXCHANGE_RATE)
+      .then((res) => {
+        expect(res.status).to.eq(200);
+      })
+      .as("getExchangeRate");
+  });
 
   beforeEach(() => {
-    cy.visit("/")
+    cy.visit("/");
   });
 
   it("have an h1 on every page", () => {
@@ -25,8 +26,9 @@ context("Rate List Page", () => {
   });
 
   it("cache rate list data", () => {
+    /* eslint-disable cypress/no-unnecessary-waiting */
     cy.wait(3000).then(() => {
-      expect(localStorage.getItem('rates-list')).to.exist;
+      expect(localStorage.getItem("rates-list")).to.exist;
     });
-  })
-})
+  });
+});
