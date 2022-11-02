@@ -39,13 +39,12 @@ async function displayRatesList() {
 }
 
 const fetcher = async (url: string) => {
-
   const request = await axios
     .get(url)
     .then((response) => {
       return response.data;
-
-    }).catch(function (error) {
+    })
+    .catch(function (error) {
       errorMsg.value = error.message;
 
       throw error.message;
@@ -91,29 +90,71 @@ onMounted(() => {
         <h1 class="mb-5 font-bold text-lg">Rates List</h1>
 
         <div v-if="ratesListTable">
-          <el-table ref="tableRef" :class="'mb-10 w-full'" :data="displayRatesListTable">
-            <el-table-column fixed sortable prop="info.name" label="Name" min-width="150" />
-            <el-table-column class-name="text-right" sortable prop="info.type" label="Type" />
-            <el-table-column class-name="text-right" prop="info.unit" label="Unit" />
-            <el-table-column class-name="text-right" sortable prop="info.value" :formatter="formatter" label="Value"
-              min-width="150" />
+          <el-table
+            ref="tableRef"
+            :class="'mb-10 w-full'"
+            :data="displayRatesListTable"
+          >
+            <el-table-column
+              fixed
+              sortable
+              prop="info.name"
+              label="Name"
+              min-width="150"
+            />
+            <el-table-column
+              class-name="text-right"
+              sortable
+              prop="info.type"
+              label="Type"
+            />
+            <el-table-column
+              class-name="text-right"
+              prop="info.unit"
+              label="Unit"
+            />
+            <el-table-column
+              class-name="text-right"
+              sortable
+              prop="info.value"
+              :formatter="formatter"
+              label="Value"
+              min-width="150"
+            />
           </el-table>
 
           <div class="hidden lg:block">
-            <el-pagination :class="'justify-end px-0'" background layout="sizes, prev, pager, next"
-              :total="ratesListTable.length" @current-change="handlePaginationChange"
-              @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25, 100]" :page-size="pageSize" />
+            <el-pagination
+              :class="'justify-end px-0'"
+              background
+              layout="sizes, prev, pager, next"
+              :total="ratesListTable.length"
+              @current-change="handlePaginationChange"
+              @size-change="handlePageSizeChange"
+              :page-sizes="[5, 10, 25, 100]"
+              :page-size="pageSize"
+            />
           </div>
 
           <div class="lg:hidden">
-            <el-pagination small background layout="prev, pager, next" :total="ratesListTable.length"
-              @current-change="handlePaginationChange" @size-change="handlePageSizeChange" :page-sizes="[5, 10, 25]"
-              :page-size="pageSize" />
+            <el-pagination
+              small
+              background
+              layout="prev, pager, next"
+              :total="ratesListTable.length"
+              @current-change="handlePaginationChange"
+              @size-change="handlePageSizeChange"
+              :page-sizes="[5, 10, 25]"
+              :page-size="pageSize"
+            />
           </div>
         </div>
 
-        <div v-else="!ratesListTable">
-          <el-empty :image-size="200"  description="Oops, there is something wrong with the server. We are fixing it. Please try again later." />
+        <div v-else>
+          <el-empty
+            :image-size="200"
+            description="Oops, there is something wrong with the server. We are fixing it. Please try again later."
+          />
         </div>
       </div>
     </div>
