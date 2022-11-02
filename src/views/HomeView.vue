@@ -5,8 +5,9 @@ import { onMounted } from "vue";
 import useSWRV from "swrv";
 import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
 import type ElTable from "element-plus/es/components/table";
+import { ApiConstant } from "@/constant/api.constant";
 
-const apiURL = "https://api.coingecko.com/api/v3/exchange_rates";
+const apiURL = ApiConstant.EXCHANGE_RATE;
 
 let ratesListTable = ref();
 
@@ -19,7 +20,7 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
 
 async function displayRatesList() {
   const { data: res, mutate } = useSWRV(apiURL, fetcher, {
-    cache: new LocalStorageCache("swrv"),
+    cache: new LocalStorageCache("rates-list"),
     shouldRetryOnError: false,
   });
 
